@@ -44,11 +44,14 @@ namespace RPSLSGame
 				Console.WriteLine ("Computer: " + computerPlay);
 				Console.WriteLine ("your Gesture: " + playerGesture);
 
-				if (playerGesture.Equals(computerPlay)){
+				if (playerGesture.Equals(computerPlay)) {
+					Console.WriteLine("Game ended in a stalemate")
 					tie++;
-				}else if(playerGesture.Defeats(computerPlay)){
+				} else if (playerGesture.Defeats(computerPlay)) {
+					Console.WriteLine("You're a Winner")
 					win++;
-				}else{
+				} else {
+					Console.WriteLine("you got schooled!")
 					lose++;
 				}
 
@@ -136,58 +139,58 @@ namespace RPSLSGame
 
 		static IList<Gesture> GetGestures()
 		{
-        	var spock = new Gesture("Spock");
-        	var lizard = new Gesture("Lizard");
-        	var paper = new Gesture("Paper");
-        	var rock = new Gesture("Rock");
-        	var scissors = new Gesture("Scissors");
+        		var spock = new Gesture("Spock");
+        		var lizard = new Gesture("Lizard");
+        		var paper = new Gesture("Paper");
+        		var rock = new Gesture("Rock");
+        		var scissors = new Gesture("Scissors");
 
-	        spock.AddDefeats(new[] { scissors, rock });
-    	    lizard.AddDefeats(new[] { paper, spock });
-        	paper.AddDefeats(new[] { rock, spock });
-        	rock.AddDefeats(new[] { lizard, scissors });
-        	scissors.AddDefeats(new[] { paper, lizard });
+		        spock.AddDefeats(new[] { scissors, rock });
+    		        lizard.AddDefeats(new[] { paper, spock });
+        		paper.AddDefeats(new[] { rock, spock });
+        	 	rock.AddDefeats(new[] { lizard, scissors });
+        		scissors.AddDefeats(new[] { paper, lizard });
 
-	        var gestures = new List<Gesture> {rock, paper, scissors, lizard, spock};
-    	    gestures.ForEach(x => x.Seal());
-        	return gestures;
-    	}
+		        var gestures = new List<Gesture> {rock, paper, scissors, lizard, spock};
+    		        gestures.ForEach(x => x.Seal());
+        		return gestures;
+    		}
 	}
 
 	public class Gesture
 	{
-    	public override string ToString()
-	    {
-    	    return Name;
-	    }
+    		public override string ToString()
+	    	{
+    	    		return Name;
+	    	}
 
-	    private HashSet<Gesture> _defeats = new HashSet<Gesture>();
-    	private bool _isSealed;
-    	public string Name { get; private set; }
+		private HashSet<Gesture> _defeats = new HashSet<Gesture>();
+    		private bool _isSealed;
+    		public string Name { get; private set; }
 
-    	public Gesture(string name)
-    	{
-        	if (name == null) throw new ArgumentNullException("name");
-        	Name = name;
-    	}
+    		public Gesture(string name)
+    		{
+        		if (name == null) throw new ArgumentNullException("name");
+        		Name = name;
+    		}
 
-    	public void Seal()
-    	{
-        	_isSealed = true;
-    	}
+	    	public void Seal()
+    		{
+        		_isSealed = true;
+    		}
 
-    	public void AddDefeats(IEnumerable<Gesture> defeats)
-    	{
-        	if (_isSealed)
-        	{
-            	throw new Exception("Gesture is sealed");
-        	}
+	    	public void AddDefeats(IEnumerable<Gesture> defeats)
+    		{
+        		if (_isSealed)
+        		{
+	            	throw new Exception("Gesture is sealed");
+        		}
 
-        	foreach (var gesture in defeats)
-       		{
-        	    _defeats.Add(gesture);
-    	    }
-    	}
+        		foreach (var gesture in defeats)
+       			{
+	        	    _defeats.Add(gesture);
+    			}
+    		}
 
 		//public void AddKillMessage(Tuple<Gesture,Gesture,string>  
 		public void AddKillMessage (Dictionary<Dictionary<Gesture,Gesture>,string> killMessage)
@@ -197,28 +200,28 @@ namespace RPSLSGame
 			}
 		}
 
-	    protected bool Equals(Gesture other)
-	    {
-    	    return string.Equals(Name, other.Name);
-	    }
+	    	protected bool Equals(Gesture other)
+	    	{
+    	    		return string.Equals(Name, other.Name);
+	    	}
 
-    	public override bool Equals(object obj)
-    	{
-    	    if (ReferenceEquals(null, obj)) return false;
-    	    if (ReferenceEquals(this, obj)) return true;
-    	    if (obj.GetType() != this.GetType()) return false;
-    	    return Equals((Gesture) obj);
-    	}
+	    	public override bool Equals(object obj)
+    		{
+	    	    if (ReferenceEquals(null, obj)) return false;
+    		    if (ReferenceEquals(this, obj)) return true;
+    		    if (obj.GetType() != this.GetType()) return false;
+    		    return Equals((Gesture) obj);
+    		}
 
-    	public override int GetHashCode()
-        {
-    	    return Name.GetHashCode();
-	    }
+	    	public override int GetHashCode()
+        	{
+	    	    return Name.GetHashCode();
+		}
 
-    	public bool Defeats(Gesture gesture)
-    	{
-        	return _defeats.Any(x => x.Equals(gesture));
-    	}
+	    	public bool Defeats(Gesture gesture)
+    		{
+        		return _defeats.Any(x => x.Equals(gesture));
+    		}
 	}
 }
 
